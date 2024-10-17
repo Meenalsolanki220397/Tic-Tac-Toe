@@ -8,7 +8,7 @@ const Square = ({ value, onSquareClick }) => {
   );
 };
 
-export default function Board() {
+const Board = () => {
   const [xIsNext, setXIsNext] = useState(true); // adding state to check. if next move should be X or O
   const [squares, setSquares] = useState(Array(9).fill(null));
 
@@ -125,6 +125,14 @@ export default function Board() {
           }}
         />
       </div>
+    </>
+  );
+};
+
+export default function Game() {
+  return (
+    <>
+      <Board />
     </>
   );
 }
