@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// child
 const Square = ({ value, onSquareClick }) => {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -8,9 +9,10 @@ const Square = ({ value, onSquareClick }) => {
   );
 };
 
-const Board = () => {
-  const [xIsNext, setXIsNext] = useState(true); // adding state to check. if next move should be X or O
-  const [squares, setSquares] = useState(Array(9).fill(null));
+// parent
+const Board = ({ xIsNext, squares, onPlay }) => {
+  // const [xIsNext, setXIsNext] = useState(true); // adding state to check. if next move should be X or O
+  // const [squares, setSquares] = useState(Array(9).fill(null));
 
   const handleClick = (i) => {
     // adding validation check if tile is filled then user cant edit it, only empty tile can be fit with X or O
@@ -24,8 +26,7 @@ const Board = () => {
     } else {
       nextSquares[i] = "O";
     }
-    setXIsNext(!xIsNext);
-    setSquares(nextSquares);
+    onPlay(nextSquares);
   };
 
   // defining all formats for winning
@@ -129,10 +130,20 @@ const Board = () => {
   );
 };
 
+// super parent
 export default function Game() {
+  const [xIsNext, setXIsNext] = useState(true); // adding state to check. if next move should be X or O
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const currentSquares = history[history.length - 1];
+
+  const handlePlay = (nextSquares) => {
+    setHistory([...history, nextSquares]);
+    setXIsNext(!xIsNext);
+  };
+
   return (
     <>
-      <Board />
+      <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
     </>
   );
 }
