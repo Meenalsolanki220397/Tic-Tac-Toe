@@ -9,11 +9,22 @@ const Square = ({ value, onSquareClick }) => {
 };
 
 export default function Board() {
+  const [xIsNext, setXIsNext] = useState(true); // adding state to check. if next move should be X or O
   const [squares, setSquares] = useState(Array(9).fill(null));
 
   const handleClick = (i) => {
+    // adding validation check if tile is filled then user cant edit it, only empty tile can be fit with X or O
+    if (squares[i]) {
+      return;
+    }
     const nextSquares = squares.slice();
-    nextSquares[i] = "X";
+    // adding turns
+    if (xIsNext) {
+      nextSquares[i] = "X";
+    } else {
+      nextSquares[i] = "O";
+    }
+    setXIsNext(!xIsNext);
     setSquares(nextSquares);
   };
   return (
